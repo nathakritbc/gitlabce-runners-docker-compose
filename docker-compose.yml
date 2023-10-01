@@ -1,0 +1,23 @@
+version: "3"
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:16.4.0-ce.0
+    container_name: gitlab-ce
+    restart: always
+    hostname: "192.168.34.240" # Set your custom hostname here
+    ports:
+      - "8929:8929" # Map GitLab port to your desired port
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://192.168.34.240:8929'  # Set your custom external URL here
+    volumes:
+      - ./config:/etc/gitlab
+      - ./data:/var/opt/gitlab
+      - ./logs:/var/log/gitlab
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - ./runner-config:/etc/gitlab-runner
